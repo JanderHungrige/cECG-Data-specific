@@ -23,8 +23,8 @@ win_jumps=faktor/faktor; % as it is already on 30s epoch we need a shift by 1
 Fenster=win/30; % 300/30= 10 parts a 30s => 5min 
 
 m=1;
+uebrig=length(SDNN_30);  % how many minutes are left           
 for k=1:win_jumps:length(SDNN_30)
-       uebrig=length(SDNN_30)-(k+win_jumps);  % how many minutes are left           
    if k+Fenster<length(SDNN_30) 
        SDANN{1,m}=SDNN_30(1,k:k+Fenster-1); 
    elseif k+Fenster>=length(SDNN_30) && win_jumps<=uebrig && k>win_jumps*(Fenster-(uebrig/win_jumps)*win_jumps)/win_jumps
@@ -32,11 +32,14 @@ for k=1:win_jumps:length(SDNN_30)
        links=(Fenster-rechts*win_jumps)/win_jumps; % how many epochs do we have to atahe from the left to get a full 300s window
        SDANN{1,m}=SDNN_30(1,k-win_jumps*links:k+win_jumps*rechts-1);
    elseif k+Fenster>=length(SDNN_30) &&  win_jumps>uebrig && k>win_jumps*(Fenster-(uebrig/win_jumps)*win_jumps)/win_jumps     
+       rechts=uebrig/win_jumps;% How many epochs are still left 
+       links=(Fenster-rechts*win_jumps)/win_jumps; % how many epochs do we have to atahe from the left to get a full 300s window
        SDANN{1,m}=SDNN_30(1,k-win_jumps*links:end);       
    else
        SDANN{1,m}=SDNN_30(1,k:end);
 %            break       % if you want to end with the same length for the clast cell elementas the others use break. But than the ECG_win_300 is one element shorter thatn ECG_win_30    
    end
+   uebrig=length(SDNN_30)-(k+win_jumps);  % how many minutes are left           
    m=m+1;
 end
 
