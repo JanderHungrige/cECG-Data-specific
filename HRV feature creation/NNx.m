@@ -1,4 +1,4 @@
-function NNx(RR,Neonate,saving,savefolder,win,Session,S)
+function NNx(RR,Neonate,saving,savefolder,win,S)
 %Input
 % RR: 5min RR distance data
 % Neonate: Which patient
@@ -15,22 +15,22 @@ NN50(1:length(RR))=nan;NN30=NN50;NN20=NN50;NN10=NN50; %preallocation
            
           NN50(1,i)=sum(abs(diff(RR{i,1}))>=50);
           if saving                     %saving R peaks positions in mat file                 
-             Saving(NN50,savefolder,Neonate,win,Session,S) 
+             Saving(NN50,savefolder,Neonate,win,S) 
           end% end if saving  
 
           NN30(1,i)=sum(abs(diff(RR{i,1}))>=30);
           if saving                     %saving R peaks positions in mat file                 
-             Saving(NN30,savefolder,Neonate,win,Session,S) 
+             Saving(NN30,savefolder,Neonate,win,S) 
           end% end if saving
 
           NN20(1,i)=sum(abs(diff(RR{i,1}))>=20);
           if saving                     %saving R peaks positions in mat file                 
-             Saving(NN20,savefolder,Neonate,win,Session,S) 
+             Saving(NN20,savefolder,Neonate,win,S) 
           end% end if saving   
 
           NN10(1,i)=sum(abs(diff(RR{i,1}))>=10);
           if saving                     %saving R peaks positions in mat file                 
-             Saving(NN10,savefolder,Neonate,win,Session,S) 
+             Saving(NN10,savefolder,Neonate,win,S) 
           end% end if saving 
           
     end
@@ -51,10 +51,10 @@ end
   
 
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate, win,Session,S)
+    function Saving(Feature,savefolder, Neonate,win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_win_' num2str(win) '_' Session],'Feature')
+            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       

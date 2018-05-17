@@ -127,7 +127,7 @@ savefolderRR
 
         if strcmp('cECG',dataset)==1
             t_ECG=linspace(0,length(cECG.values)/FS_ecg,length(cECG.values))';
-            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(cECG.values,t_ECG,Neonate,win,saving,savefolder,faktor); 
+            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(cECG.values,t_ECG,Neonate,saving,folder,factor,win,S); 
             [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,SavefolderAnnotations,win,S,faktor);
         elseif strcmp('ECG',dataset)==1
             t_ECG=linspace(0,length(ECG.values)/FS_ecg,length(ECG.values))';
@@ -199,7 +199,7 @@ savefolderRR
         disp('* RR calcuated')
         if saving; RR=RR_30 ;  Saving(RR,savefolderRR, Neonate, win,S);end
     %% ************ Creating spectrum for ECG-Signal **************         
-       [powerspectrum,f]=Lomb_scargel_single(RR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,Sessions(S,1).name,S) ;
+       [powerspectrum,f]=Lomb_scargel_single(RR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,S) ;
         disp('* Periodogram calculated')
 
         
@@ -208,52 +208,52 @@ savefolderRR
     %%%%%%%% ECG TIME DOMAIN     
 %         disp('ECG time domain analysis start') 
 % 
-%         Beats_per_Epoch(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S)   % S for session number
+%         Beats_per_Epoch(RR_300,Neonate,saving,savefolderHRVtime,win,S)   % S for session number
 %              disp('- BpE finished')
-%         linelength(ECG_win_300,t_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S)     
+%         linelength(ECG_win_300,t_300,Neonate,saving,savefolderHRVtime,win,S)     
 %              disp('- Linelength finished')
-%         meanarclength(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,Sessions(S,1).name,S) 
+%         meanarclength(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,S) 
 %              disp('- Mean linelength finished')
-%         SDLL(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,Sessions(S,1).name,S) %Standart derivation of 5min linelength
+%         SDLL(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,S) %Standart derivation of 5min linelength
 %              disp('- SDLL finsihed')
-%         SDaLL(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,Sessions(S,1).name,S) %Standart derivation of 30s linelength meaned over 5min
+%         SDaLL(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,S) %Standart derivation of 30s linelength meaned over 5min
 %              disp('- SDaLL finished') 
 
 
 %   %%%%%%%% HRV TIME DOMAIN
 %         disp('HRV time domain analysis start')
 % 
-%         SDNN(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S);
+%         SDNN(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- SDNN finished') 
-%         RMSSD(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S);
+%         RMSSD(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- RMSSD finished')  
-%         NNx(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S);
+%         NNx(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- NNx finished') 
-%         pNNx(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S);
+%         pNNx(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- pNNx finished') 
-%         SDANN(RR_30,Neonate,saving,savefolderHRVtime,win,faktor,Sessions(S,1).name,S);
+%         SDANN(RR_30,Neonate,saving,savefolderHRVtime,win,faktor,S);
 %             disp('- SDANN finished')
-        pDec(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S,@Saving);
+        pDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- pDEC finished') 
-        SDDec(RR_300,Neonate,saving,savefolderHRVtime,win,Sessions(S,1).name,S);
+        SDDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %            disp('- SDDec finished')
  
           
 %   %%%%%%% HRV Frequency domain
 %         disp('Frequency time domain start')
 
-%         freqdomainHRV (powerspectrum,f,Neonate,win,saving,savefolderHRVfreq,Sessions(S,1).name,S)
+%         freqdomainHRV (powerspectrum,f,Neonate,win,saving,savefolderHRVfreq,S)
 %            disp('- Frequency finished') 
 
 
     %%%%%%% HRV Non linear
 %         disp('Nonlinear analysis start')
 
-%         SampEn_QSE_SEAUC(RR_300,Neonate,saving,savefolderHRVnonlin,win,faktor,Sessions(S,1).name,S ) %
+%         SampEn_QSE_SEAUC(RR_300,Neonate,saving,savefolderHRVnonlin,win,faktor,S ) %
 %             disp('- SampEn QSE SEAUCfinished')
-%         LempelZivECG(ECG_win_300,Neonate,saving,savefolderHRVnonlin,win,Sessions(S,1).name,S)  
+%         LempelZivECG(ECG_win_300,Neonate,saving,savefolderHRVnonlin,win,S)  
 %           disp('- LepelZiv ECG finished')         
-%         LempelZivRR(RR_300,Neonate,saving,savefolderHRVnonlin,win,Sessions(S,1).name,S);
+%         LempelZivRR(RR_300,Neonate,saving,savefolderHRVnonlin,win,S);
 %           disp('- LepelZiv HRV finished')   
 
 
@@ -264,7 +264,7 @@ savefolderRR
  end% Patient
 toc
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate, win,Session,S)
+    function Saving(Feature,savefolder, Neonate, win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
             save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')

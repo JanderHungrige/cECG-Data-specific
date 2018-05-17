@@ -1,4 +1,4 @@
-function [Annotations_win_300,Annotations_win_30]=SlidingWindow_Annotations(Annotations,t_ECG,Neonate,saving,savefolder,win,Session,S,factor)  
+function [Annotations_win_300,Annotations_win_30]=SlidingWindow_Annotations(Annotations,t_ECG,Neonate,saving,savefolder,win,S,factor)  
 % probelm: if the window reach the end and h is taking over. It could
 % happen that e.g. the h=1 value is empty, that is skiped, but than with
 % h=2 the index is subtracted 2 (h=2) which will be empty. The new value is
@@ -81,7 +81,7 @@ end
 
 Annotations=Annotations_win_30;
 if saving
-    Saving(Annotations,savefolder, Neonate, 30,Session,S)
+    Saving(Annotations,savefolder, Neonate, 30,S)
 end
 Annotations=[];
 %AS=1; QS=2; Wake=3; CareTaking=4; UnknownBedState=5; Transition 61-65
@@ -89,10 +89,10 @@ Annotations=[];
 end
 
 %% Nested saving
-    function Saving(Annotations,savefolder, Neonate, win,Session,S)
-        if exist('Annotations','var')==1
+    function Saving(Feature,savefolder, Neonate,win,S)
+        if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_win_' num2str(win) '_' Session],'Annotations')
+            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       

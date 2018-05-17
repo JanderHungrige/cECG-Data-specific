@@ -1,4 +1,4 @@
-function pNNx(RR,Neonate,saving,savefolder,win,Session,S)
+function pNNx(RR,Neonate,saving,savefolder,win,S)
 %Input
 % RR: 5min RR distance data
 % Neonate: Which patient
@@ -20,22 +20,22 @@ end
 
           pNN50(1,i)=(sum(abs(diff(RR{i,1}))>=50)/length(RR{i,1}))*100;
           if saving                     %saving R peaks positions in mat file                 
-             Saving(pNN50,savefolder,Neonate,win,Session,S) 
+             Saving(pNN50,savefolder,Neonate,win,S) 
           end% end if saving    
 
           pNN30(1,i)=(sum(abs(diff(RR{i,1}))>=30)/length(RR{i,1}))*100;
           if saving                     %saving R peaks positions in mat file                 
-             Saving(pNN30,savefolder,Neonate,win,Session,S) 
+             Saving(pNN30,savefolder,Neonate,win,S) 
           end% end if saving   
 
           pNN20(1,i)=(sum(abs(diff(RR{i,1}))>=20)/length(RR{i,1}))*100;
           if saving                     %saving R peaks positions in mat file                 
-             Saving(pNN20,savefolder,Neonate,win,Session,S) 
+             Saving(pNN20,savefolder,Neonate,win,S) 
           end% end if saving   
 
           pNN10(1,i)=(sum(abs(diff(RR{i,1}))>=10)/length(RR{i,1}))*100;
           if saving                     %saving R peaks positions in mat file                 
-             Saving(pNN10,savefolder,Neonate,win,Session,S) 
+             Saving(pNN10,savefolder,Neonate,win,S) 
           end% end if saving   
   end
 
@@ -51,10 +51,10 @@ end
 end
     
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate, win,Session,S)
+    function Saving(Feature,savefolder, Neonate,win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_win_' num2str(win) '_' Session],'Feature')
+            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       

@@ -1,4 +1,4 @@
-function linelength(ECG,t_ECG,Neonate,saving,savefolder,win,Session,S) 
+function linelength(ECG,t_ECG,Neonate,saving,savefolder,win,S) 
 %Input
 % RR: 5min RR distance data
 % Neonate: Which patient
@@ -15,15 +15,15 @@ lineLength{1,1}=lineLength{1,2}; % due to nan, cannot be determined correctly. l
 
 %%%%%%%%%%%% SAVING            
     if saving                     %saving R peaks positions in mat file                 
-       Saving(lineLength,savefolder,Neonate,win,Session,S) 
+       Saving(lineLength,savefolder,Neonate,win,S) 
     end% end if saving    
     
 end
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate, win,Session,S)
+    function Saving(Feature,savefolder, Neonate,win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_win_' num2str(win) '_' Session],'Feature')
+            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       

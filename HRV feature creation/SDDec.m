@@ -22,7 +22,7 @@ SDDEC(ix)={0};
             
 %%%%%%%%%%%% SAVING            
 if saving                     %saving R peaks positions in mat file                 
-    Saving(SDDEC,savefolder,Neonate,win,Session,S) 
+    Saving(SDDEC,savefolder,Neonate,win,S) 
 end% end if saving 
 
     

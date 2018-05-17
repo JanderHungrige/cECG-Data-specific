@@ -103,7 +103,7 @@ end
 %    end              
 % end % if saving
 if saving
-    Saving(ECG_win_30,savefolder, Neonate, Session,S)
+    Saving(ECG_win_30,savefolder, Neonate,S)
 end
 end%win 
 %% Nested saving

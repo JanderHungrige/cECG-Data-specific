@@ -1,4 +1,4 @@
-function SDNN(RR,Neonate,saving,savefolder,win,Session,S) 
+function SDNN(RR,Neonate,saving,savefolder,win,S) 
 %Input
 % RR: 5min RR distance data
 % Neonate: Which patient
@@ -18,7 +18,7 @@ SDNN(ix)={nan};
             
 %%%%%%%%%%%% SAVING            
 if saving                     %saving R peaks positions in mat file                 
-    Saving(SDNN,savefolder,Neonate,win,Session,S) 
+    Saving(SDNN,savefolder,Neonate,win,S) 
 end% end if saving 
 
     
@@ -26,10 +26,10 @@ end% end if saving
 end
 
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate, win,Session,S)
+    function Saving(Feature,savefolder, Neonate,win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_win_' num2str(win) '_' Session],'Feature')
+            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       

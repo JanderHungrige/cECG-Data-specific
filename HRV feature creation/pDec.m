@@ -1,4 +1,4 @@
-function pDec(RR,Neonate,saving,savefolder,win,Session,S) 
+function pDec(RR,Neonate,saving,savefolder,win,S) 
 %Input
 % RR: 5min RR distance data
 % Neonate: Which patient
@@ -22,7 +22,7 @@ pDEC(ix)={0};
             
 %%%%%%%%%%%% SAVING            
 if saving                     %saving R peaks positions in mat file                 
-    Saving(pDEC,savefolder,Neonate,win,Session,S) 
+    Saving(pDEC,savefolder,Neonate,win,S) 
 end% end if saving 
 
     
