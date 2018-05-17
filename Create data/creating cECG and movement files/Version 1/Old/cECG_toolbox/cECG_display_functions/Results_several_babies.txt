@@ -1,0 +1,75 @@
+---------------------------------------------------------------------------------------------------------------------------
+Analysis date:			Oct.08,2012 18:11:45
+Data set: 			20120704_143614 (0-15); 
+Sampling frequency:		250
+Configuration: WINDOW_SIZE=8000,KALMAN=0,MIN3CHANNELS=0,CHAN_SELECT=1,CHAN_2SELECT=1,NOTCH24=0,FIXED_NUM_RR=0,ANNOTATIONS=1,RESP=0,PRESSMAT=0		
+Motion segmentation based on: annotations
+---------------------------------------------------------------------------------------------------------------------------
+Results for the INSTANTANEOUS heart rate (peak to peak basis, with channel selection strategy #1).
+---------------------------------------------------------------------------------------------------------------------------
+
+Time coverage:
+	total = 14.9583 min; good% = 98 % (98 %)
+
+Interpretation:
+For 14.9583 minutes of data, the RR-intervals where perfectly detected during 14.5961 minutes (i.e. 98% of the time).
+If we exclude the interventions and ignored periods, we are left with 14.9583 minutes of data from which 14.5961 minutes lead to a perfect detection of RR-intervals.
+In other words, when the baby doesn't receive special care, the instantaneous heart rate is perfectly reliable during 98% of the time.
+(Note that his percentage of time is changed to 98% if we use only 2 sensors from the array of 8 sensors.)
+
+Lost segments:
+	# = 0 ; max = 0.768 s
+
+Interpretation:
+If we exclude the interventions and ignored periods, there were 0 segments of data LONGER than 10 seconds which didn't allowed an accurate instantaneous heart rate computation.
+The longest period of unreliable instantaneous heart rate for this dataset (intervention and ignored periods excluded) was of 0.768 seconds.
+
+Details of the peak detection for different motion levels:
+	Activity	Minutes	PPV	SEN	ERROR
+	----------------------------------
+	No motion	15.0	99.7	98.5	0.02
+	Low motion	0.0	NaN	NaN	NaN
+	High motion	0.0	NaN	NaN	NaN
+	Intervent.	0.0	NaN	NaN	NaN
+	----------------------------------
+	Whole data	15.0	99.7	98.5	0.02
+	----------------------------------
+	No intervent.	15.0	99.7	98.5	0.02
+
+---------------------------------------------------------------------------------------------------------------------------
+Results for the AVERAGED heart rate (mean iHR value over the last 10 seconds (at least)).
+---------------------------------------------------------------------------------------------------------------------------
+
+Time coverage:
+	total = 14.9833 min; good% = 81 %, bad% = 19
+	Rel. Indic. ----> good% = 90 %, bad% = 8
+
+Interpretation:
+By comparing the averaged HR signal with the reference averaged HR signal, an error may occur.
+If we assume that an error of 3 bpm is acceptable, then we have an reliable heart rate on the whole dataset for 81% of the 14.9833 minutes considered.
+(Note that if a reliability indicator is used during the computation of the mean, then we get a reliable heart rate on the whole dataset for 90% of the 14.9833 minutes considered.)
+If we assume that an error of 3 bpm is acceptable and if we exclude the intervention periods, then we have an reliable heart rate for 81% of the 14.9833 minutes considered.
+(Note that if a reliability indicator is used during the computation of the mean, then we get a reliable heart rate (intervention excluded) for 90% of the 14.9833 minutes considered.)
+
+Lost segments:
+	# = 8; max = 17 s
+	Rel. Indic. --> # = 1; max = 11 s
+
+Interpretation:
+If we exclude the interventions and ignored periods, there were 8 segments of data LONGER than 10 seconds during which the averaged heart rate was not matching the reference averaged heart rate.
+The longest period of unreliable averaged heart rate for this dataset (intervention and ignored periods excluded) was of 17 seconds.
+(Note that if a reliability indicator is used during the computation of the mean, we got 1 segments of data LONGER than 10 seconds whose max is of 11 seconds.)
+
+Details of the averaged heart rate for different motion levels (with Rel. Ind. and 3bpm difference allowed):
+	Activity		Minutes		good%		bad%
+	-------------------------------------------------------
+	No motion   		14.98		90		 8
+	Low motion  		0.00		NaN		NaN
+	High motion 		0.00		NaN		NaN
+	Intervention		0.00		NaN		NaN
+	-------------------------------------------------------
+	Whole data  		14.98		90		 8
+	-------------------------------------------------------
+	No intervention		14.98		90		 8
+
+---------------------------------------------------------------------------------------------------------------------------

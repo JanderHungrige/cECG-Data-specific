@@ -1,0 +1,59 @@
+-------------------------------------------
+For online processing of online data (DEMO):
+-------------------------------------------
+
+- start LabView and the E-NEMO project
+
+- make the LabView/Matlab interface call main_algorithm when processing is needed 
+
+- run launch_online_demo in the Matlab command window
+
+- start the demo
+
+
+-------------------------------------
+For online processing of offline data:
+-------------------------------------
+
+- start Matlab
+
+- make sure the current directory is the cECG toolbox
+
+(- Optional: define the processing mode in launch_processing.m (video yes or not, dynamic graph yes or not,specific dataset...))
+
+(- Optional: edit the file offline_processing.m to further process the data or display specific graphs)
+
+- run launch_processing
+
+
+
+Questions? aline.serteyn@gmail.com
+
+Last modif:
+
+V28-08-2012:
+ - Kalman resets only kalman variables!
+ - MIN3CHANNELS: boolean
+ - CHAN_2SELECT: for the peak detection strategy
+ - FUSION renamed
+ - text file improved with config
+
+07-09-2012: 
+- motionIn instead of motionANNO in offline processing
+- display dataset name + start/stop time in compiled text file
+- plot_segments is improved
+- filtered data is done always (also if no channel selected) --> offline signal synchro + study of channel selection possible with visual signals
+= projectedData deal with channel == 2!
+
+
+ V8-10-2012 (main, launch, determineFilter, notchFiltering, spotdiff,outpikeloc,flip_proximity):
+ - Louis CHAN_SELECT strategy added (+CHAN_2SELECT)
+ - Proximity_matrix init
+ - notch filter init
+ - debug CHAN_2SELECT==2: channelToUse instead of channelsToUseALT
+ - notch filter (determineFilter + notchFiltering.m + filteredData1/filteredDataREF1)
+ - move down safe block
+ - vcg computations if num_channels>2
+ - ATTENTION: rel_indicator: numel(channelsToUse)>=3 replaced by
+ numel(channelsToUse)>=2 (line 840
+ - histogram (offline proc, launch proc, determine_...)

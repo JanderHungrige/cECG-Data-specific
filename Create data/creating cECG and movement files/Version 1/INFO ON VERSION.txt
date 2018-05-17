@@ -1,0 +1,2 @@
+THis VERsion 1 functions well for patients with one ECG file. Unfortunattely it does not for atients with more than one.
+Therefore, ALine created a new version "Version 2" which loads the cECG in a differnet way.
