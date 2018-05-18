@@ -20,13 +20,12 @@ pat=[4,5,6,7,9,10,11,12,13];
 pat=[7,9,10,11,12,13];
 pat=[4,5,6]
 pat=[4,5,6,7,11,13];
-pat=5
+
 
 RRMethod='R'; %M or R to calculate the RR with Michiel or Ralphs algorythm
 saving=1;
 plotting=0;
 win=300;
-winXi=300;
 faktor=30; % how much is the data moving forward? 30s is classic
 FS_ecg=500;
 
@@ -40,18 +39,33 @@ addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\ECG feature 
 
 path='E'; % the HDD file with the patient data. Needed for loading ECG
 loadfolder=([path ':\cECG_study\B_Annotations\Datafiles\For Quick Annotator\']);
-savefolder= ([path ':\cECG_study\C_Processed_Data\']);
+% savefolder= ([path ':\cECG_study\C_Processed_Data\']);
+savefolder=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\');
+% savefolder=('E:\cECG_study\C_Processed_Data\For Xi\');
+
 SavefolderAnnotations=([ savefolder 'Annotations\']);
 
 if strcmp(RRMethod,'R')
     if strcmp('ECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'HRV_features\timedomain\']);
         savefolderHRVfreq= ([ savefolder 'HRV_features\freqdomain\']);        
-        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinear\']);        
+        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinear\']);
+        savefolderECG= ([ savefolder 'HRV_features\ECG\']);
+        savefolderEDR=([ savefolder 'HRV_features\EDR\']);
+        savefolderRR=([ savefolder 'HRV_features\RR\']);
+        savefolderResp=([ savefolder 'HRV_features\Resp\']);
+        savefolderAnnotations=([ savefolder 'HRV_features\Annotations\']);
+
     elseif strcmp('cECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'cHRV_features\timedomain\']);
         savefolderHRVfreq= ([ savefolder 'cHRV_features\freqdomain\']);        
-        savefolderHRVnonlin= ([ savefolder 'cHRV_features\nonlinear\']);        
+        savefolderHRVnonlin= ([ savefolder 'cHRV_features\nonlinear\']);
+        savefolderECG= ([ savefolder 'cHRV_features\ECG\']);
+        savefolderEDR=([ savefolder 'cHRV_features\EDR\']);
+        savefolderRR=([ savefolder 'cHRV_features\RR\']);
+        savefolderResp=([ savefolder 'cHRV_features\Resp\']); 
+        savefolderAnnotations=([ savefolder 'cHRV_features\Annotations\']);
+        
     else
         disp('Error: wrong dataset string. Line 7 in CallingHRVfunctions_for_cECG')
         stop
@@ -60,19 +74,26 @@ elseif  strcmp(RRMethod,'M')
     if strcmp('ECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'HRV_features\timedomainM\']);
         savefolderHRVfreq= ([ savefolder 'HRV_features\freqdomainM\']);        
-        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinearM\']);        
+        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinearM\']);
+        savefolderECG= ([ savefolder 'HRV_features\ECGM\']);
+        savefolderEDR=([ savefolder 'HRV_features\EDRM\']);
+        savefolderRR=([ savefolder 'HRV_features\RRM\']);
+        savefolderResp=([ savefolder 'HRV_features\RespM\']);
+        
     elseif strcmp('cECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'cHRV_features\timedomainM\']);
         savefolderHRVfreq= ([ savefolder 'cHRV_features\freqdomainM\']);        
-        savefolderHRVnonlin= ([ savefolder 'cHRV_features\nonlinearM\']);        
+        savefolderHRVnonlin= ([ savefolder 'cHRV_features\nonlinearM\']); 
+        savefolderECG= ([ savefolder 'cHRV_features\ECGM\']);
+        savefolderEDR=([ savefolder 'cHRV_features\EDRM\']);
+        savefolderRR=([ savefolder 'cHRV_features\RRM\']);
+        savefolderResp=([ savefolder 'cHRV_features\RespM\']);
+        
     else
         disp('Error: wrong dataset string. Line 7 in CallingHRVfunctions_for_cECG')
         stop
     end 
 end
-
-savefolderRR
-
 
 
  for I=1:length(pat)
@@ -82,9 +103,6 @@ savefolderRR
     
   
 %% ************ Load data **************
-
-    
-
 
 %     filetype='DAQ'; % PAtietn 12 misses one annotation file
     filetype='Intellivue'; % Patient 4 misses one Intellivue File
@@ -127,8 +145,8 @@ savefolderRR
 
         if strcmp('cECG',dataset)==1
             t_ECG=linspace(0,length(cECG.values)/FS_ecg,length(cECG.values))';
-            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(cECG.values,t_ECG,Neonate,saving,folder,factor,win,S); 
-            [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,SavefolderAnnotations,win,S,faktor);
+            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(cECG.values,t_ECG,Neonate,saving,folder,faktor,win,S); 
+            [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,savefolder,win,S,faktor);
         elseif strcmp('ECG',dataset)==1
             t_ECG=linspace(0,length(ECG.values)/FS_ecg,length(ECG.values))';
             t_Resp=linspace(0,length(Resp.values)/FS_ecg,length(Resp.values))';
@@ -136,7 +154,7 @@ savefolderRR
             % The differnec in t_300 and t_ECG_300 is that t_ECG_300 is a
             % continuous run of time, while t_300 is 0 to t for each cell element
            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(ECG.values,t_ECG,Neonate,saving,savefolderEDR,faktor,win,S); 
-           [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,savefolderEDR,faktor,win,S);           
+           [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,savefolderAnnotations,win,S,faktor);           
 %            [Resp_win_300,Resp_win_30,t_Resp_300,t_Resp_30]=SlidingWindow_Resp(Resp.values,t_Resp,Neonate,win,saving,savefolderResp,Sessions(S,1).name,faktor,S); 
            [EDR_win_300,EDR_win_30,t_EDR_300,t_EDR_30]=SlidingWindow_EDR(EDR.values,t_EDR,Neonate,saving,savefolderEDR,faktor,win,S); 
              disp(['* Data is merged into windows of length: ' num2str(win) 's and ' num2str(30) 's'] )  
@@ -151,61 +169,61 @@ savefolderRR
         
         if strcmp(RRMethod,'M')
 %Michiel
-            for R=1:length(ECG_win_300)
-                t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';
-                if all(isnan(ECG_win_300{1,R}'))==1 || range(ECG_win_300{1,R}')==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
-                     RR_300{R,1}=NaN(1,length(ECG_win_300{1,R})) ;
-                else
-                    ECG_win_300{1,R}(isnan(ECG_win_300{1,R})) = []; %Michiels cannot handle a single NAN
-                    t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';                   
-                    [RR_idxM] = streamingpeakdetection(ECG_win_300{1,R}', 500, [60 256], plotting, 18.5, 1024);
-                    RR_300{R,1}=diff(RR_idxM.peakPositionArray)./500; % Calculating the time between the R peaks in seconds
-                    RR_300{R,1}=[NaN RR_300{R,1}];% NAn is needed to make RR and RR_idx same length which is needed for lomb scargle
-                    RR_idx_300{R,1}=RR_idxM.peakPositionArray; 
-                end
-            end           
-            for R=1:length(ECG_win_30)
-                t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';
-                if all(isnan(ECG_win_30{1,R}'))==1 || range(ECG_win_30{1,R}')==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
-                     RR_30{R,1}=NaN(1,length(ECG_win_30{1,R})) ;
-                else
-                    ECG_win_30{1,R}(isnan(ECG_win_30{1,R})) = []; %Michiels cannot handle a single NAN
-                    t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';                   
-                    [RR_idxM] = streamingpeakdetection(ECG_win_30{1,R}', 500, [60 256], plotting, 18.5, 1024);
-                    RR_30{R,1}=diff(RR_idxM.peakPositionArray)./500; % Calculating the time between the R peaks in seconds
-                    RR_30{R,1}=[NaN RR_30{R,1}];                    
-                    RR_idx_30{R,1}=RR_idxM.peakPositionArray; 
-                end
-            end                
-        elseif strcmp(RRMethod,'R')
-%Ralph            
-            for R=1:length(ECG_win_300)
-                t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';
-                if all(isnan(ECG_win_300{1,R}))==1 || range(ECG_win_300{1,R})==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
-                   RR_300{R,1}=NaN(1,length(ECG_win_300{1,R})) ;
-                else
-                    [RR_idx_300{R,1}, ~, ~, ~, ~, RR_300{R,1}, ~] = ecg_find_rpeaks(t_300{1,R},Ralphsfactor{Neonate,1}*ECG_win_300{1,R}, FS_ecg, 250,plotting,0); %, , , maxrate,plotting,saving   -1* because Ralph optimized for a step s slope, we also have steep Q slope. inverting fixes that probel 
-                end
-            end
-            for R=1:length(ECG_win_30)  
-                t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';        
-                if all(isnan(ECG_win_30{1,R}))==1 || range(ECG_win_30{1,R})==0 % if all elements are NAN or the same value, R peaks cannot be calculated
-                   RR_30{R,1}=NaN(1,length(ECG_win_30{1,R})) ;
-                else        
-                [RR_idx_30{R,1}, ~, ~, ~, ~, RR_30{R,1}, ~] = ecg_find_rpeaks(t_30{1,R},Ralphsfactor{Neonate,1}*ECG_win_30{1,R}, FS_ecg, 250,plotting,0); %, , , maxrate,plotting,saving   -1* because Ralph optimized for a step s slope, we also have steep Q slope. inverting fixes that probel             
-                end
-            end        
-        end
-        disp('* RR calcuated')
-        if saving; RR=RR_30 ;  Saving(RR,savefolderRR, Neonate, win,S);end
+%             for R=1:length(ECG_win_300)
+%                 t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';
+%                 if all(isnan(ECG_win_300{1,R}'))==1 || range(ECG_win_300{1,R}')==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
+%                      RR_300{R,1}=NaN(1,length(ECG_win_300{1,R})) ;
+%                 else
+%                     ECG_win_300{1,R}(isnan(ECG_win_300{1,R})) = []; %Michiels cannot handle a single NAN
+%                     t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';                   
+%                     [RR_idxM] = streamingpeakdetection(ECG_win_300{1,R}', 500, [60 256], plotting, 18.5, 1024);
+%                     RR_300{R,1}=diff(RR_idxM.peakPositionArray)./500; % Calculating the time between the R peaks in seconds
+%                     RR_300{R,1}=[NaN RR_300{R,1}];% NAn is needed to make RR and RR_idx same length which is needed for lomb scargle
+%                     RR_idx_300{R,1}=RR_idxM.peakPositionArray; 
+%                 end
+%             end           
+%             for R=1:length(ECG_win_30)
+%                 t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';
+%                 if all(isnan(ECG_win_30{1,R}'))==1 || range(ECG_win_30{1,R}')==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
+%                      RR_30{R,1}=NaN(1,length(ECG_win_30{1,R})) ;
+%                 else
+%                     ECG_win_30{1,R}(isnan(ECG_win_30{1,R})) = []; %Michiels cannot handle a single NAN
+%                     t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';                   
+%                     [RR_idxM] = streamingpeakdetection(ECG_win_30{1,R}', 500, [60 256], plotting, 18.5, 1024);
+%                     RR_30{R,1}=diff(RR_idxM.peakPositionArray)./500; % Calculating the time between the R peaks in seconds
+%                     RR_30{R,1}=[NaN RR_30{R,1}];                    
+%                     RR_idx_30{R,1}=RR_idxM.peakPositionArray; 
+%                 end
+%             end                
+%         elseif strcmp(RRMethod,'R')
+% %Ralph            
+%             for R=1:length(ECG_win_300)
+%                 t_300{1,R}=linspace(0,length(ECG_win_300{1,R})/FS_ecg,length(ECG_win_300{1,R}))';
+%                 if all(isnan(ECG_win_300{1,R}))==1 || range(ECG_win_300{1,R})==0  % if only Nan Ralph cannot handle it or if all values are the same (Flat line)
+%                    RR_300{R,1}=NaN(1,length(ECG_win_300{1,R})) ;
+%                 else
+%                     [RR_idx_300{R,1}, ~, ~, ~, ~, RR_300{R,1}, ~] = ecg_find_rpeaks(t_300{1,R},Ralphsfactor{Neonate,1}*ECG_win_300{1,R}, FS_ecg, 250,plotting,0); %, , , maxrate,plotting,saving   -1* because Ralph optimized for a step s slope, we also have steep Q slope. inverting fixes that probel 
+%                 end
+%             end
+%             for R=1:length(ECG_win_30)  
+%                 t_30{1,R}=linspace(0,length(ECG_win_30{1,R})/FS_ecg,length(ECG_win_30{1,R}))';        
+%                 if all(isnan(ECG_win_30{1,R}))==1 || range(ECG_win_30{1,R})==0 % if all elements are NAN or the same value, R peaks cannot be calculated
+%                    RR_30{R,1}=NaN(1,length(ECG_win_30{1,R})) ;
+%                 else        
+%                 [RR_idx_30{R,1}, ~, ~, ~, ~, RR_30{R,1}, ~] = ecg_find_rpeaks(t_30{1,R},Ralphsfactor{Neonate,1}*ECG_win_30{1,R}, FS_ecg, 250,plotting,0); %, , , maxrate,plotting,saving   -1* because Ralph optimized for a step s slope, we also have steep Q slope. inverting fixes that probel             
+%                 end
+%             end        
+%         end
+%         disp('* RR calcuated')
+%         if saving; RR=RR_30 ;  Saving(RR,savefolderRR, Neonate, win,S);end
     %% ************ Creating spectrum for ECG-Signal **************         
-       [powerspectrum,f]=Lomb_scargel_single(RR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,S) ;
-        disp('* Periodogram calculated')
-
-        
-    %% ************ CALCULATE FEATURES **************
-
-    %%%%%%%% ECG TIME DOMAIN     
+%        [powerspectrum,f]=Lomb_scargel_single(RR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,S) ;
+%         disp('* Periodogram calculated')
+% 
+%         
+%     %% ************ CALCULATE FEATURES **************
+% 
+%     %%%%%%%% ECG TIME DOMAIN     
 %         disp('ECG time domain analysis start') 
 % 
 %         Beats_per_Epoch(RR_300,Neonate,saving,savefolderHRVtime,win,S)   % S for session number
@@ -218,8 +236,8 @@ savefolderRR
 %              disp('- SDLL finsihed')
 %         SDaLL(ECG_win_30,t_30,Neonate,saving,savefolderHRVtime,win,faktor,S) %Standart derivation of 30s linelength meaned over 5min
 %              disp('- SDaLL finished') 
-
-
+% 
+% 
 %   %%%%%%%% HRV TIME DOMAIN
 %         disp('HRV time domain analysis start')
 % 
@@ -233,22 +251,22 @@ savefolderRR
 %             disp('- pNNx finished') 
 %         SDANN(RR_30,Neonate,saving,savefolderHRVtime,win,faktor,S);
 %             disp('- SDANN finished')
-        pDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
+%         pDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %             disp('- pDEC finished') 
-        SDDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
+%         SDDec(RR_300,Neonate,saving,savefolderHRVtime,win,S);
 %            disp('- SDDec finished')
- 
-          
+%  
+%           
 %   %%%%%%% HRV Frequency domain
 %         disp('Frequency time domain start')
-
+% 
 %         freqdomainHRV (powerspectrum,f,Neonate,win,saving,savefolderHRVfreq,S)
 %            disp('- Frequency finished') 
-
-
-    %%%%%%% HRV Non linear
+% 
+% 
+%     %%%%%% HRV Non linear
 %         disp('Nonlinear analysis start')
-
+% 
 %         SampEn_QSE_SEAUC(RR_300,Neonate,saving,savefolderHRVnonlin,win,faktor,S ) %
 %             disp('- SampEn QSE SEAUCfinished')
 %         LempelZivECG(ECG_win_300,Neonate,saving,savefolderHRVnonlin,win,S)  

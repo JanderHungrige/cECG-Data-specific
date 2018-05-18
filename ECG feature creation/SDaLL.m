@@ -26,7 +26,7 @@ end
 win_jumps=faktor/faktor; % as it is already on 30s epoch we need a shift by 1
 Fenster=win/30; % 300/30= 10 parts a 30s => 5min 
 m=1;
-uebrig=length(lineLength)-(k+win_jumps);  % how many minutes are left           
+uebrig=length(lineLength);  % how many minutes are left           
 for k=1:win_jumps:length(lineLength)
    if k+Fenster<length(lineLength) 
        SDaLL{1,m}=lineLength(1,k:k+Fenster-1); 

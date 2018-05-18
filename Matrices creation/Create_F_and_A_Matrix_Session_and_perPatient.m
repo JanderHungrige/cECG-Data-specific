@@ -28,7 +28,7 @@ win=300; % window of annotations. 30 precicse, 300 smoothed
 Pat=[4,5,6,7,9,10,11,12,13];
 % Pat=6;
 Pat=[4,5,6,7,11,13];
-Pat=5
+Pat=13
 path='E:\';
 if strcmp('ECG',dataset)==1
     datapath=[path 'cECG_study\C_Processed_Data\HRV_features\'];
@@ -36,6 +36,7 @@ elseif strcmp('cECG',dataset)==1
     datapath=[path 'cECG_study\C_Processed_Data\cHRV_features\'];    
 end
 
+datapath=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\HRV_Features\');
 % if strcmp(RRMethod,'R')
 %     if strcmp('ECG',dataset)==1
 %         savefolder= ([path 'cECG_study\C_Processed_Data\Matrices\']);
@@ -44,7 +45,8 @@ if strcmp(RRMethod,'R')
     if strcmp('ECG',dataset)==1
         savefolder= (['C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\Matrices\']);
         savefolderSession=(['C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\Matrices\Sessions\']);    
-        
+        savefolder=(['C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\Matrices_DAQ\']);
+        savefolderSession=(['C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\Matrices_DAQ\Sessions\']);    
 
     elseif strcmp('cECG',dataset)==1
         savefolder= ([path 'cECG_study\C_Processed_Data\cMatrices\']);
@@ -126,7 +128,9 @@ Sessionlength=dir([TFeature_path Featurenames_time{1,1} '_Session_*_' num2str(Ne
 Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
 
     for i=1:Sessionlength  
-        dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_win_' num2str(win) '_Intellivue_*_' num2str(Neonate) '.mat']);
+%         dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_win_' num2str(win) '_Intellivue_*_' num2str(Neonate) '.mat']);
+        dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_win_' num2str(win) '_DAQ_*_' num2str(Neonate) '.mat']);
+
         load([loadfolderAnnotation dateiname.name]);
         
     % all from one patient TIME DOMAIN

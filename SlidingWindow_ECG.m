@@ -1,4 +1,4 @@
-function [ECG_win_300,ECG_win_30,t_300,t_30]=SlidingWindow_ECG(ECG,t_ECG,Neonate,saving,folder,factor,win,S)  
+function [ECG_win_300,ECG_win_30,t_300,t_30]=SlidingWindow_ECG(ECG,t_ECG,Neonate,saving,savefolder,factor,win,S)  
 % probelm: if the window reach the end and h is taking over. It could
 % happen that e.g. the h=1 value is empty, that is skiped, but than with
 % h=2 the index is subtracted 2 (h=2) which will be empty. The new value is
@@ -103,13 +103,13 @@ end
 %    end              
 % end % if saving
 if saving
-    Saving(ECG_win_30,savefolder, Neonate,S)
+    Saving(ECG_win_30,savefolder, Neonate,win,S)
 end
 end%win 
 %% Nested saving
     function Saving(Feature,savefolder, Neonate, win,S)
         if exist('Feature','var')==1
-            name=inputname(1); % variable name of function input
+             name=inputname(1); % variable name of function input
             save([savefolder name '_Session_' num2str(S) '_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])

@@ -68,7 +68,7 @@ end
 
 Annotations=Annotations_win_300;
 if saving
-    Saving(Annotations,savefolder, Neonate, win,S)
+    Saving(Annotations,savefolder, Neonate, 300,S)
 end
 Annotations=[];
 %%%%%%%%%%% Creating one annotation per 30s window
