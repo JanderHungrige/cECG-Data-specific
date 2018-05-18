@@ -1,4 +1,3 @@
-%18.4.2018 LAst change
 %This m file generates FEature and annotation Matrices. Per patient and per
 %session
 % Each Row is one Feature. Where each session of the same Feature
@@ -29,6 +28,7 @@ win=300; % window of annotations. 30 precicse, 300 smoothed
 Pat=[4,5,6,7,9,10,11,12,13];
 % Pat=6;
 Pat=[4,5,6,7,11,13];
+Pat=13
 % path='E:\';
 
 path=('C:\Users\310122653\Documents\PhD\');
@@ -77,7 +77,7 @@ end
 
 
 % loadfolderAnnotation= [path 'cECG_study\C_Processed_Data\Annotations\'];
-loadfolderAnnotation= [datapath 'Annotations\'];
+loadfolderAnnotation= [datapath 'cECG_study\C_Processed_Data\Annotations\'];
 
 
 Featurenames_time={...
