@@ -88,10 +88,10 @@ Annotations=[];
 end
 
 %% Nested saving
-    function Saving(Feature,savefolder, Neonate,win,S)
-        if exist('Feature','var')==1
+    function Saving(Annotations,savefolder, Neonate,win,S)
+        if exist('Annotations','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) 'pat_' num2str(Neonate)],'Feature')
+            save([savefolder name '_Session_' num2str(S) '_pat_' num2str(Neonate)],'Annotations')
         else
             disp(['saving of ' name ' not possible'])
         end       

@@ -29,6 +29,7 @@ win=300; % window of annotations. 30 precicse, 300 smoothed
 Pat=[4,5,6,7,9,10,11,12,13];
 % Pat=6;
 Pat=[4,5,6,7,11,13];
+Pat=[6,13]
 % path='E:\';
 
 path=('C:\Users\310122653\Documents\PhD\');
@@ -57,9 +58,9 @@ if strcmp(RRMethod,'R')
 %     TFeature_path=[datapath 'timedomain\'];
 %     FFeature_path=[datapath 'freqdomain\'];
 %     NLFeature_path=[datapath 'nonlinear\'];    
-    TFeature_path=[datapath 'HRV_Feaures\timedomain\'];
-    FFeature_path=[datapath 'HRV_Feaures\freqdomain\'];
-    NLFeature_path=[datapath 'HRV_Feaures\nonlinear\'];  
+    TFeature_path=[datapath 'HRV_Features\timedomain\'];
+    FFeature_path=[datapath 'HRV_Features\freqdomain\'];
+    NLFeature_path=[datapath 'HRV_Features\nonlinear\'];  
 % elseif strcmp(RRMethod,'M')
 %      if strcmp('ECG',dataset)==1
 %         savefolder= ([path 'cECG_study\C_Processed_Data\MatricesM\']);
@@ -134,13 +135,14 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
 
     for i=1:Sessionlength  
 %         dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_win_' num2str(win) '_Intellivue_*_' num2str(Neonate) '.mat']);
-        dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_win_' num2str(win) '_DAQ_*_' num2str(Neonate) '.mat']);
+        dateiname=dir([loadfolderAnnotation 'Annotations_Session_' num2str(i) '_pat_' num2str(Neonate) '.mat']);
 
         load([loadfolderAnnotation dateiname.name]);
-        
     % all from one patient TIME DOMAIN
         for j=1:length(Featurenames_time) 
+%             dateiname=dir([TFeature_path Featurenames_time{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
             dateiname=dir([TFeature_path Featurenames_time{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
+
             load([TFeature_path dateiname.name])
             if length(Feature)>length(Annotations)
                 Feature=Feature(1:length(Annotations)); % Cut the Feature to the length of the annotation. We asume that the annotations always start at the beginning but end earlier
@@ -161,7 +163,9 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
 
     % all from on patient FREQUENCY DOMAIN
         for j=1:length(Featurenames_frequency) 
+%             dateiname=dir([FFeature_path Featurenames_frequency{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
             dateiname=dir([FFeature_path Featurenames_frequency{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
+            
             load([FFeature_path dateiname.name]);
             if length(Feature)>length(Annotations)
                 Feature=Feature(1:length(Annotations)); % Cut the Feature to the length of the annotation. We asume that the annotations always start at the beginning but end earlier
@@ -183,7 +187,8 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
     
 % all from on patient NONELINEAR    
         for j=1:length(Featurenames_nonlinear) 
-            dateiname=dir([NLFeature_path Featurenames_nonlinear{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
+%             dateiname=dir([NLFeature_path Featurenames_nonlinear{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);
+            dateiname=dir([NLFeature_path Featurenames_nonlinear{j,1} '_Session_' num2str(i) '_*_' num2str(Neonate) '.mat']);                        
             load([NLFeature_path dateiname.name])
             if length(Feature)>length(Annotations)
                 Feature=Feature(1:length(Annotations)); % Cut the Feature to the length of the annotation. We asume that the annotations always start at the beginning but end earlier

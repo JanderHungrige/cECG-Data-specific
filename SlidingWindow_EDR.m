@@ -107,8 +107,9 @@ end%win
     function Saving(Feature,savefolder, Neonate, win,S)
         if exist('Feature','var')==1
             name=inputname(1); % variable name of function input
-            save([savefolder name '_Session_' num2str(S) '_' num2str(Neonate)],'Feature')
+            save([savefolder name '_Session_' num2str(S) '_pat_' num2str(Neonate)],'Feature')
         else
             disp(['saving of ' name ' not possible'])
         end       
     end
+ 
