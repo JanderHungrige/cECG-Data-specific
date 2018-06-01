@@ -13,24 +13,30 @@ clear
 clc
 tic
 
+shutItDown=1; % if you want to shut the PC down after finishing all calculations;
 
 dataset='ECG'; % cECG or ECG later maybe MMC and InnerSence
-
+filetype='DAQ'; % PAtietn 12 misses one annotation file
+filetype='Intellivue'; % Patient 4 misses one Intellivue File
+    
 pat=[4,5,6,7,9,10,11,12,13]; 
-pat=[7,9,10,11,12,13];
-pat=[4,5,6]
 pat=[4,5,6,7,11,13];
-pat=[5,6,13]
+pat=[7,11]
+pat=[4,9,10,12]; 
+
+saving=1;
+
 
 RRMethod='R'; %M or R to calculate the RR with Michiel or Ralphs algorythm
-saving=1;
+Annotators='B3A';% As Kappa is 1 we can use either of the annotations.
 plotting=0;
 win=300;
 faktor=30; % how much is the data moving forward? 30s is classic
+faktor_annot=1; % If we choose the Annotations per second use 30. If you use the annotations already in 30s, use 1
 FS_ecg=500;
 
-Matlabbase='C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\HRV feature creation\';
 
+Matlabbase='C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\HRV feature creation\';
 addpath(Matlabbase)
 addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific')
 addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\R peak detection')
@@ -38,22 +44,28 @@ addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\Annotation')
 addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\ECG feature creation')
 
 path='E'; % the HDD file with the patient data. Needed for loading ECG
-loadfolder=([path ':\cECG_study\B_Annotations\Datafiles\For Quick Annotator\']);
+% loadfolder=([path ':\cECG_study\B_Annotations\Datafiles\For Quick Annotator\']);
+% annotationfolder= [path ':\cECG_study\B_Annotations\' Annotators '\participant'];
 % savefolder= ([path ':\cECG_study\C_Processed_Data\']);
-savefolder=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\');
+
+%Folders after HDD crash. Now with VPN from Philips storage
 % savefolder=('E:\cECG_study\C_Processed_Data\For Xi\');
+loadfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\RAW DATA\For_Quick_Annotator\';
+% annotationfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\Annotations\Data and annotations used by Jan (Bea)\Annotation\participant';
+annotationfolder='C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Raw Data\Annotation\participant';
+savefolder=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\');
 
 SavefolderAnnotations=([ savefolder 'Annotations\']);
 
 if strcmp(RRMethod,'R')
     if strcmp('ECG',dataset)==1
-        savefolderHRVtime= ([ savefolder 'HRV_features\timedomain\']);
-        savefolderHRVfreq= ([ savefolder 'HRV_features\freqdomain\']);        
-        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinear\']);
-        savefolderECG= ([ savefolder 'HRV_features\ECG\']);
-        savefolderEDR=([ savefolder 'HRV_features\EDR\']);
-        savefolderRR=([ savefolder 'HRV_features\RR\']);
-        savefolderResp=([ savefolder 'HRV_features\Resp\']);
+        savefolderHRVtime= ([ savefolder 'HRV_features\timedomain\']); mkdir (savefolderHRVtime) ;
+        savefolderHRVfreq= ([ savefolder 'HRV_features\freqdomain\']); mkdir (savefolderHRVfreq) ;    
+        savefolderHRVnonlin= ([ savefolder 'HRV_features\nonlinear\']); mkdir (savefolderHRVnonlin) ;
+        savefolderECG= ([ savefolder 'HRV_features\ECG\']);mkdir (savefolderECG) ;
+        savefolderEDR=([ savefolder 'HRV_features\EDR\']);mkdir (savefolderEDR) ;
+        savefolderRR=([ savefolder 'HRV_features\RR\']);mkdir (savefolderRR) ;
+        savefolderResp=([ savefolder 'HRV_features\Resp\']);mkdir (savefolderResp) ;
 
     elseif strcmp('cECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'cHRV_features\timedomain\']);
@@ -101,13 +113,12 @@ end
     
   
 %% ************ Load data **************
-
-    filetype='DAQ'; % PAtietn 12 misses one annotation file
-%     filetype='Intellivue'; % Patient 4 misses one Intellivue File
     
     if strcmp('cECG',dataset)==1 % as the cECG values are stored with the DAQ
         filetype='DAQ'; % PAtietn 12 misses one annotation file
     end
+    
+    
 
 %     filetype='DAQ';nn% use only when Pat=4 and S=2    
 
@@ -136,7 +147,7 @@ end
 %% ************ Load annotations (1s) **************  
 %loading 1 secondannotations for this particular patient/session
 
-        Annotation=loading_annotations(Neonate,Sessions(S,1).name);
+        Annotation=loading_annotations(Neonate,Sessions(S,1).name,annotationfolder);
         disp('* Annotation loaded')
 
  %% ************ Window  ECG /  Annotation signals 
@@ -152,7 +163,7 @@ end
             % The differnec in t_300 and t_ECG_300 is that t_ECG_300 is a
             % continuous run of time, while t_300 is 0 to t for each cell element
            [ECG_win_300,ECG_win_30,t_ECG_300,t_ECG_30]=SlidingWindow_ECG(ECG.values,t_ECG,Neonate,saving,savefolderECG,faktor,win,S); 
-           [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,t_ECG,Neonate,saving,SavefolderAnnotations,win,S,faktor);           
+%            [Annotations_win_300, Annotations_win_30]=SlidingWindow_Annotations(Annotation,Neonate,saving,SavefolderAnnotations,win,S,faktor_annot);           
 %            [Resp_win_300,Resp_win_30,t_Resp_300,t_Resp_30]=SlidingWindow_Resp(Resp.values,t_Resp,Neonate,win,saving,savefolderResp,Sessions(S,1).name,faktor,S); 
            [EDR_win_300,EDR_win_30,t_EDR_300,t_EDR_30]=SlidingWindow_EDR(EDR.values,t_EDR,Neonate,saving,savefolderEDR,faktor,win,S); 
              disp(['* Data is merged into windows of length: ' num2str(win) 's and ' num2str(30) 's'] )  
@@ -279,6 +290,13 @@ end
 
  end% Patient
 toc
+if saving
+    disp(['FEatures are saved in ' savefolder 'HRV_features\'])
+end
+if shutItDown
+    system('shutdown -s')
+end
+
 %% Nested saving
     function Saving(Feature,savefolder, Neonate, win,S)
         if exist('Feature','var')==1

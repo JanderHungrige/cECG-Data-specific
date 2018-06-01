@@ -1,13 +1,12 @@
-function Annotation=loading_annotations(patient, Session)
+function Annotation=loading_annotations(patient, Session,annotationfolder)
 
 %This function loads the annotation for the patient and his session from
 %"CallingHRVfunctions_for_cECG.m"
 
-Annotators='B3A';% As Kappa is 1 we can use either of the annotations.
 s = strsplit(Session,'_');  % get only session number
 
 % Digging into the annotation folder
-annotationfolder= ['E:\cECG_study\B_Annotations\' Annotators '\participant' num2str(patient)];
+annotationfolder=[annotationfolder num2str(patient)];
 annotationfiles=dir([annotationfolder '\*.mat ' ]);
 %Finding matching Session and annotations
 for p=1:length(annotationfiles)

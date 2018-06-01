@@ -3,17 +3,19 @@ clc
 clear
 
 
-epoch=1; %[30] [1] 30 seconds or 1 secondepoch annotations
+epoch=30; %[30] [1] 30 seconds or 1 secondepoch annotations
 deleteOldMatfiles=1;
 
 Annotator='B3A';
-Annotator='Va13ntina';
+% Annotator='Va13ntina';
 
 Neonate=[4,5,6,7,9,10,11,12,13];
 
 for p=1:length(Neonate)
     pat=Neonate(p);
-    annotationfolder= ['E:\cECG_study\Annotations\' Annotator '\participant' num2str(pat)];
+%     annotationfolder= ['E:\cECG_study\Annotations\' Annotator '\participant' num2str(pat)];
+%     annotationfolder=['\\code1\storage\2012-0194_neonatal_data\cECG study\Annotations\Data and annotations used by Jan (Bea)\Annotation\participant' num2str(pat)];
+    annotationfolder=['C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Raw Data\Annotation\participant'  num2str(pat)];
     annotationfiles=dir([annotationfolder '\*' num2str(epoch) '.csv ' ]);
     savefolder=[annotationfolder '\'];
     

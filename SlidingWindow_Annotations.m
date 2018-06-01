@@ -1,4 +1,4 @@
-function [Annotations_win_300,Annotations_win_30]=SlidingWindow_Annotations(Annotations,t_ECG,Neonate,saving,savefolder,win,S,factor)  
+function [Annotations_win_300,Annotations_win_30]=SlidingWindow_Annotations(Annotations,Neonate,saving,savefolder,win,S,factor)  
 % probelm: if the window reach the end and h is taking over. It could
 % happen that e.g. the h=1 value is empty, that is skiped, but than with
 % h=2 the index is subtracted 2 (h=2) which will be empty. The new value is
@@ -46,18 +46,20 @@ end
 %%%%%%%%%%% CREATING Annotations (30s) WINDOWS
 win_jumps=factor;
 Fenster=30;
-
-m=1;
-for k=1:win_jumps:length(Annotations)
-   if k+Fenster<length(Annotations) 
-    Annotations_win_30{1,m}=Annotations(k:k+Fenster-1,1);
-   elseif k+Fenster>=length(Annotations) 
-       Annotations_win_30{1,m}=Annotations(k:end,1);
-       break
-   end
-   m=m+1;
+if factor==1
+    Annotations_win_30=num2cell(Annotations');
+else
+    m=1;
+    for k=1:win_jumps:length(Annotations)
+       if k+Fenster<length(Annotations) 
+        Annotations_win_30{1,m}=Annotations(k:k+Fenster-1,1);
+       elseif k+Fenster>=length(Annotations) 
+           Annotations_win_30{1,m}=Annotations(k:end,1);
+           break
+       end
+       m=m+1;
+    end
 end
-
 
 %%%%%%%%%%% Creating one annotation per 5 min window
 for L=1:length(Annotations_win_300)
@@ -72,13 +74,16 @@ if saving
 end
 Annotations=[];
 %%%%%%%%%%% Creating one annotation per 30s window
-for L=1:length(Annotations_win_30)
-    [a,b]=hist(Annotations_win_30{1,L},[1,2,3,4,5,6]); %61,62,63,64,65]);
-    [N,idx]=max(a);
-    Annotations_win_30{1,L}=idx;
+if factor~=1
+    for L=1:length(Annotations_win_30)
+        [a,b]=hist(Annotations_win_30{1,L},[1,2,3,4,5,6]); %61,62,63,64,65]);
+        [N,idx]=max(a);
+        Annotations_win_30{1,L}=idx;
+    end
 end
 
 Annotations=Annotations_win_30;
+
 if saving
     Saving(Annotations,savefolder, Neonate, 30,S)
 end

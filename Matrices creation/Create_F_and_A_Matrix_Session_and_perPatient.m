@@ -17,21 +17,44 @@
 %#3 Cut annotation and Feature to the same length
 %#4 Save each combination as Session in multile matrices
 %#5 Merge Feature Sessions together Safe them as one matrix
-
-
 clear
 clc
+
+
+%1 UMBENENEN hrv FEATURES IN INTELLIVUE FEATURES
+% run annotaions for 4 9 10 12 separate
+% create matrice
+% do same for DAQ (not 4)
+
+
+
 RRMethod='R'; %M or R if Michiels or Ralphs RR peak detection method was used 
 dataset='ECG'; % ECG or cECG. In the fUture mayebe MMC and InnerSense
 saving=1;
 win=300; % window of annotations. 30 precicse, 300 smoothed
+win=30;
 
 Pat=[4,5,6,7,9,10,11,12,13];
 % Pat=6;
 Pat=[4,5,6,7,11,13];
-Pat=[6,13]
 % path='E:\';
+Pat=[4,5,6,7,11,13];
+Pat=[9,10,12]
 
+Device='Intellivue' ;%DAQ Intellivue or something else
+if strcmp(Device,'DAQ')
+    datarecording='HRV_Features_DAQ';
+    deviceMatric = 'Matrix_DAQ';
+    disp('using DAQ')
+elseif strcmp(Device,'Intellivue')
+    datarecording='HRV_Features_Intellivue';
+    deviceMatric = 'Matrix_Intellivue';
+    disp('using Intellivue')
+else
+    datarecording='HRV_Features';
+    deviceMatric = 'Matrix'; 
+    disp('using overall')
+end
 path=('C:\Users\310122653\Documents\PhD\');
 if strcmp('ECG',dataset)==1
 %     datapath=[path 'cECG_study\C_Processed_Data\HRV_features\'];
@@ -44,11 +67,10 @@ if strcmp(RRMethod,'R')
     if strcmp('ECG',dataset)==1
 %         savefolder= ([path 'cECG_study\C_Processed_Data\Matrices\']);
 %         savefolderSession=([path 'cECG_study\C_Processed_Data\Matrices\Sessions\']);    
-        savefolder= ([datapath 'Matrices\']); %inellivue
-        savefolderSession=([datapath 'Matrices\Sessions\']);    %inellivue
-        savefolder=([ datapath 'Matrices_DAQ\']);% DAQ
-        savefolderSession=([datapath 'Matrices_DAQ\Sessions\']);  %DAQ  
-
+        savefolder= ([datapath deviceMatric '\']); %inellivue
+        savefolderSession=([datapath deviceMatric '\Sessions\']);    %inellivue
+        mkdir(savefolder);
+        mkdir(savefolderSession);
     elseif strcmp('cECG',dataset)==1
 %         savefolder= ([path 'cECG_study\C_Processed_Data\cMatrices\']);
 %         savefolderSession=([path 'cECG_study\C_Processed_Data\cMatrices\Sessions\']);    
@@ -58,9 +80,9 @@ if strcmp(RRMethod,'R')
 %     TFeature_path=[datapath 'timedomain\'];
 %     FFeature_path=[datapath 'freqdomain\'];
 %     NLFeature_path=[datapath 'nonlinear\'];    
-    TFeature_path=[datapath 'HRV_Features\timedomain\'];
-    FFeature_path=[datapath 'HRV_Features\freqdomain\'];
-    NLFeature_path=[datapath 'HRV_Features\nonlinear\'];  
+    TFeature_path=[datapath datarecording '\timedomain\'];
+    FFeature_path=[datapath datarecording '\freqdomain\'];
+    NLFeature_path=[datapath datarecording '\nonlinear\'];  
 % elseif strcmp(RRMethod,'M')
 %      if strcmp('ECG',dataset)==1
 %         savefolder= ([path 'cECG_study\C_Processed_Data\MatricesM\']);
