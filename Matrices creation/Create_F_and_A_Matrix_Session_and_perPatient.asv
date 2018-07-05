@@ -1,4 +1,5 @@
-%18.4.2018 LAst change
+%18.4.2018 LAst change , stuff for Xi
+%5.7.2018 last change, added z score per feature and per session 
 %This m file generates FEature and annotation Matrices. Per patient and per
 %session
 % Each Row is one Feature. Where each session of the same Feature
@@ -30,7 +31,7 @@ clc
 
 RRMethod='R'; %M or R if Michiels or Ralphs RR peak detection method was used 
 dataset='ECG'; % ECG or cECG. In the fUture mayebe MMC and InnerSense
-saving=1;
+saving=0;
 win=300; % window of annotations. 30 precicse, 300 smoothed
 win=30;
 
@@ -39,8 +40,8 @@ Pat=[4,5,6,7,9,10,11,12,13];
 Pat=[4,5,6,7,11,13];
 % path='E:\';
 Pat=[4,5,6,7,11,13];
-Pat=[4,9,10,12]
-
+Pat=[9,10,11,12,13]
+Pat=[4,5,6,7,9,10,11,12,13];
 Device='Intellivue' ;%DAQ Intellivue or something else
 if strcmp(Device,'DAQ')
     datarecording='HRV_Features_DAQ';
@@ -178,8 +179,9 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
                 tmp= [tmp; cell2mat(Feature)]; % adding each session of one feature to one single line of Feature 
             else
                 tmp= [tmp; Feature]; % adding each session of one feature to one single line of Feature 
-            end             
+            end 
         end
+        tmp=zscore(tmp,1,2);% per sample(1), per row(2) Standardizing the data to mean 0 and standard deviation                
         tmp2=[tmp2 ,tmp]; % Adding the long single line of Feature into the Feature Matrix, where each row is one Feature        
         tmp=[];
 
@@ -201,8 +203,9 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
             tmp= [tmp; cell2mat(Feature)]; % adding each session of one feature to one single line of Feature 
             else
             tmp= [tmp; Feature]; % adding each session of one feature to one single line of Feature 
-            end             
+            end  
         end
+        tmp=zscore(tmp,1,2);% per sample(1), per row(2) Standardizing the data to mean 0 and standard deviation                
         tmp3=[tmp3 ,tmp]; % Adding the long single line of Feature into the Feature Matrix, where each row is one Feature
         tmp=[];
     
@@ -224,21 +227,23 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
             tmp= [tmp; cell2mat(Feature)]; % adding each session of one feature to one single line of Feature 
             else
             tmp= [tmp; Feature]; % adding each session of one feature to one single line of Feature 
-            end             
+            end 
         end
+        tmp=zscore(tmp,1,2);% per sample(1), per row(2) Standardizing the data to mean 0 and standard deviation                
         tmp4=[tmp4 ,tmp]; % Adding the long single line of Feature into the Feature Matrix, where each row is one Feature
         tmp=[];
         FeatureMatrix=[tmp2; tmp3 ;tmp4]; % Adding the long single line of Feature into the Feature Matrix, where each row is one Feature
         tmp2=[];tmp3=[];tmp4=[]; % Resetting 
         
         % Deleting nans as the standart scaler of Python cannot handle nans
-% % % % % % % % % % % % % % % % % % % % % % %         % Simultaniousely in Features and Annotations to not loose synch
-% % % % % % % % % % % % % % % % % % % % % % %         [r,c]=find(any(isnan(FeatureMatrix),1));
-% % % % % % % % % % % % % % % % % % % % % % %         Annotations=cell2mat(Annotations);
-% % % % % % % % % % % % % % % % % % % % % % %         FeatureMatrix(:,c)=[];
-% % % % % % % % % % % % % % % % % % % % % % %         Annotations(:,c)=[];
-% % % % % % % % % % % % % % % % % % % % % % %         clearvars r c
+%         Simultaniousely in Features and Annotations to not loose synch
+        [r,c]=find(any(isnan(FeatureMatrix),1));
+        Annotations=cell2mat(Annotations);
+        FeatureMatrix(:,c)=[];
+        Annotations(:,c)=[];
+        clearvars r c
         
+
         if saving
             Saving_Session_F(FeatureMatrix,savefolderSession, Neonate,i)
             Saving_Session_A(Annotations,savefolderSession, Neonate,i)
@@ -250,7 +255,10 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
     end % Session       
     Annotations=Annottmp;
     FeatureMatrix=FeatureMatrix_tmp;
-
+    % The FEature Matrix is composed of standardised sessions. Therfore
+    % mean is laready 0 and std 1 . Another z-score does not alter the
+    % values anymore. We leave it in 
+%     FeatureMatrix=zscore(FeatureMatrix,1,2);% per sample(1), per row(2) Standardizing the data to mean 0 and standard deviation                
 if saving
     Saving_F(FeatureMatrix,savefolder, Neonate)
     Saving_A(Annotations,savefolder, Neonate)
