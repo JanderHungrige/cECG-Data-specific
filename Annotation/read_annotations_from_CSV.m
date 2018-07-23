@@ -84,20 +84,22 @@ for p=1:length(Neonate)
         '		QuietSleep';...
         '		Wake';...
         '		CareTaking';...
-        '		UnknownBedState'...
+        '		UnknownBedState';...
+        '		Transition'...
         };
     statevalue=[1;2;3;4;5;6];%12;21;13;31;23;32]; 6 = transition
 
     Position = zeros(length(annot_no_header),1);
     pos={'		Unknown';...
          '		Back'};
-            posvalue=[8,9];
+    posvalue=[8,9];
 
     %Transfer annotations from the excel file to an annotation array
     for i=1:length(state)
         Annotations=transferannot(annot_no_header,state{i},statevalue(i),Annotations);
 %         Annotations=addTransition(annot_no_header,i,statevalue,Annotations); %change 6 into 61 62 63...         
     end
+    
     %Transfer the positions annotation from the excel file to an annotation array
     for i=1:length(pos)
         Position=posAnnot(annot_no_header,pos{i},posvalue(i),Position);
@@ -124,10 +126,10 @@ for p=1:length(Neonate)
             eval (['Position_' Sessionnames{1,i} '_' Sessionpatient{1,i} '= Position((endsessions(i-1)+1):end,1);'])            
             
         end
-
+        
         eval(['save( "'  savefolder 'Annotations_' Sessionnames{1,i} '_' Sessionpatient{1,i} '","Annotations_' Sessionnames{1,i} '_' Sessionpatient{1,i}  '","Position_' Sessionnames{1,i} '_' Sessionpatient{1,i} '")'])      
     end
-    clearvars Sessionnames
+    clearvars Sessionnames Sessionpatient annot
 end
 
 %% Nested functions
@@ -136,9 +138,13 @@ end
 function Annotations=transferannot(annot,state,statevalue,Annotations)
     for i=1:length(annot)
         same=strcmp(annot{i,10},state);
+        sameIS=strcmp(annot{i,11},state);
       if same==1
           Annotations(i,1)=statevalue;
       end
+      if sameIS==1
+          Annotations(i,1)=statevalue;
+      end      
     end
 end
 

@@ -20,9 +20,9 @@ filetype='DAQ'; % PAtietn 12 misses one annotation file
 filetype='Intellivue'; % Patient 4 misses one Intellivue File
     
 pat=[4,5,6,7,9,10,11,12,13]; 
-% pat=[4,5,6,7,11,13];
-% pat=[7,11]
-% pat=[4,9,10,12]; 
+pat=[4,5,6,7,11,13];
+pat=[7,11]
+pat=[4,9,10,12]; 
 
 saving=0;
 
@@ -35,9 +35,9 @@ faktor=30; % how much is the data moving forward? 30s is classic
 faktor_annot=1; % If we choose the Annotations per second use 30. If you use the annotations already in 30s, use 1
 FS_ecg=500;
 
-Pat_weight=[1606, 2410, 1160, 1845, 1420, 1110, 755, 2080, 2480];
-Pat_GA=[30*7+3, 39*7+6, 27*7+3, 31*7+5, 30*7+3, 29*7+2, 27*7, 33*7+2, 27*7+3];
-Pat_CA=[30*7+3+6, 39*7+4+6, 27*7+3+7+4, 31*7+5+3*7+1, 30*7+3+5, 29*7+2+7+2, 27*7+2*7+1, 33*7+2+7+3, 27*7+3+8*7+3];
+Pat_weight;[1606 2410 1160, 1845, 1420, 1110, 755, 2080, 2480 ];
+Pat_GA; [30*7+3, 39*7+6, 27*7+3, 31*7+5, 30*7+3, 29*7+2, 27*7, 33*7+2,   ];
+Pat_CA;[30*7+3+6, 39*7+4+6, 27*7+3+7+4, 31*7+5+3*7+1, 30*7+3+5, 29*7+2+7+2, 27*7+2*7+1, 33*7+2+7+3,  ];
 Pat_GACA=Pat_CA-Pat_GA;
 NICU_info=[1,1,1,2,1,1,1,2,1];% NICU=1, NMCU=2
 C02=[2,2,2,1,1,1,1,3,2 ]; %1=CPAP, 2=lowflow 3=no
@@ -81,8 +81,7 @@ if strcmp(RRMethod,'R')
         savefolderEDR=([ savefolder 'cHRV_features\EDR\']);
         savefolderRR=([ savefolder 'cHRV_features\RR\']);
         savefolderResp=([ savefolder 'cHRV_features\Resp\']); 
-
-
+        
     else
         disp('Error: wrong dataset string. Line 7 in CallingHRVfunctions_for_cECG')
         stop
@@ -301,8 +300,6 @@ end
 
         freqdomainHRV (powerspectrum,f,Neonate,win,saving,savefolderHRVfreq,S)
            disp('- Frequency finished') 
-        freqdomainEDR (powerspectrum,f,Neonate,win,savefolderEDR,savefolderHRVfreq,S)
-           disp('- EDR requency finished')           
 
 
     %%%%%% HRV Non linear

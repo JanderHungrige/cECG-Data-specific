@@ -2,7 +2,7 @@
 
 % About Patient Nr4. Session 2 (1341399361) does not have Intellivue data. Therefore,
 % create DAQ data for that particular session(or pat 4 in total) rename it
-% to Intellivue manually and do the same with the annotations(if total 4
+% to Intellivue manually and do the same with the annotations(in total 4
 % delete the others). Then you can create the matrix without lost data(6h).
 % You cannot simply use the DAQ data as there are annotations missing and
 % to correct for that is more difficult. 
@@ -24,6 +24,7 @@ pat=[7,9,10,11,12,13];
 pat=[4,5,6]
 pat=[4,5,6,7,11,13];
 pat=[12]; 
+pat=[4,5,6,7,9,10,11,12,13]; 
 
 RRMethod='R'; %M or R to calculate the RR with Michiel or Ralphs algorythm
 Annotators='B3A';% As Kappa is 1 we can use either of the annotations.

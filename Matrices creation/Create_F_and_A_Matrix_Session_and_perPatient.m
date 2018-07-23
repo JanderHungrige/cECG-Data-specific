@@ -34,6 +34,8 @@ dataset='ECG'; % ECG or cECG. In the fUture mayebe MMC and InnerSense
 saving=1;
 win=300; % window of annotations. 30 precicse, 300 smoothed
 win=30;
+for_DNN=1 % If 1 then Annotations ara changed into cells to be th same as the once from MMC
+
 
 Pat=[4,5,6,7,9,10,11,12,13];
 % Pat=6;
@@ -253,7 +255,7 @@ Sessionlength=length(cellfun('isempty',{Sessionlength.name}));
         Annottmp=[Annottmp Annotations]; % 
 
     end % Session       
-    Annotations=Annottmp;
+    Annotations=Annottmp; 
     FeatureMatrix=FeatureMatrix_tmp;
     % The FEature Matrix is composed of standardised sessions. Therfore
     % mean is laready 0 and std 1 . Another z-score does not alter the
