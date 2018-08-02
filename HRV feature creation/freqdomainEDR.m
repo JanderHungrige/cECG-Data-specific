@@ -42,7 +42,8 @@ for l=1:length(powerspectrum)
     end
 end
 totpowR=cellfun(@sum,totpowR_band,'UniformOutput',false);
-totpowR(find([VLF{:}] == 0))={nan};  % 0 into nan
+totpowR(find([totpowR{:}] == 0))={nan};  % 0 into nan
+totpowR=cell2mat(totpowR); %LAAAAAASSSSST entry
 if saving
     Saving(totpowR,savefolder, Neonate, win,S)
 end
@@ -69,17 +70,18 @@ if saving
     Saving(LFR,savefolder, Neonate, win,S)
 end
 clearvars F
-disp(' -LF calculated')
+disp(' -LFR calculated')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %% LFnorm  LF power in normalized units LF/(total power-vlf)*100 or LF/(LF+HF)*100
+    %% MFnorm  LF power in normalized units LF/(total power-vlf)*100 or LF/(LF+HF)*100
 
 
 for i=1:length(LFR)
-    LFnormR(i)=((cell2mat(LFR(1,i)))./(totpow(1,i)-cell2mat(VLF(1,i))))*100; % before LFnorm_AS=((cell2mat(LF_AS))./totpowAS)*100;
+    LFnormR(i)=((cell2mat(LFR(1,i)))./(totpowR(1,i)))*100; % before LFnorm_AS=((cell2mat(LF_AS))./totpowAS)*100;
 end
 if saving
     Saving(LFnormR,savefolder, Neonate, win,S)
+    disp(' -LFnormR calculated')
 end
         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,24 +103,24 @@ if saving
     Saving(HFR,savefolder, Neonate, win,S)
 end
 clearvars F
-disp(' -HF calculated')
+disp(' -HFR calculated')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% HFnorm HF power in normalized units HF/(total power-vlf)*100 or HF/(LF+HF)*100
     
 for i=1:length(HFR)
-    HFnormR(i)=((cell2mat(HFR(1,i)))./(totpow(1,i)-cell2mat(VLF(1,i))))*100;     
+    HFnormR(i)=(cell2mat(HFR(1,i)))./(totpowR(1,i)-cell2mat(LFR(1,i)))*100;     
 end
 if saving
     Saving(HFnormR,savefolder, Neonate, win,S)
 end
-disp(' -HFnorm calculated')
+disp(' -HFnormR calculated')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% LF/HF Ratio LF/HF 
     
 
-ratioLFHFR=cellfun(@(LF,HF) (LF)/(HF), LFR,HFR);
+ratioLFHFR=cellfun(@(LFR,HFR) (LFR)/(HFR), LFR,HFR);
 if saving
     Saving(ratioLFHFR,savefolder, Neonate, win,S)
 end   
@@ -143,22 +145,29 @@ if saving
     Saving(MFR,savefolder, Neonate, win,S)
 end
 clearvars F
-disp(' -sHF calculated')
+disp(' -MFR calculated')
        
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %% sHFnorm sHF power in normalized units HF/(total power-vlf)*100 or HF/(LF+HF)*100
+    %% MHFnorm sHF power in normalized units HF/(total power-vlf)*100 or HF/(LF+HF)*100
     
 for i=1:length(MFR)
-    MFFnormR(i)=((cell2mat(MFR(1,i)))./(totpow(1,i)-cell2mat(VLF(1,i))))*100;     
+    MFnormR(i)=(cell2mat(MFR(1,i)))./(totpowR(1,i)-cell2mat(LFR(1,i)))*100;     
 end
 if saving
-    Saving(MFFnormR,savefolder, Neonate, win,S)
+    Saving(MFnormR,savefolder, Neonate, win,S)
 end
-disp(' -shFnorm calculated')
+disp(' -MFnormR calculated')
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% MF/HF Ratio MF/HF 
+    
 
+ratioMFHFR=cellfun(@(MFR,HFR) (MFR)/(HFR), MFR,HFR);
+if saving
+    Saving(ratioMFHFR,savefolder, Neonate, win,S)
+end   
+disp(' -ratioMFHFR calculated')
 
 
 

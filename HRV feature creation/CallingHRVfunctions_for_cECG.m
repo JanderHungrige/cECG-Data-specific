@@ -1,3 +1,4 @@
+
 %Calling RHV analysis functions
 
 % About Patient Nr4. Session 2 (1341399361) does not have Intellivue data. Therefore,
@@ -24,8 +25,8 @@ pat=[4,5,6,7,9,10,11,12,13];
 % pat=[7,11]
 % pat=[4,9,10,12]; 
 
-saving=0;
-
+saving=1;
+user='c3po';
 
 RRMethod='R'; %M or R to calculate the RR with Michiel or Ralphs algorythm
 Annotators='B3A';% As Kappa is 1 we can use either of the annotations.
@@ -42,12 +43,20 @@ Pat_GACA=Pat_CA-Pat_GA;
 NICU_info=[1,1,1,2,1,1,1,2,1];% NICU=1, NMCU=2
 C02=[2,2,2,1,1,1,1,3,2 ]; %1=CPAP, 2=lowflow 3=no
 
-Matlabbase='C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\HRV feature creation\';
+if strcmp(user,'c3po')
+    basepath='C:\Users\C3PO';
+elseif strcmp(user,'Philips')
+    basepath='C:\Users\310122653';
+end
+
+Matlabbase=[basepath '\Documents\GitHub\cECG-Data-specific\HRV feature creation\'];
+cd(Matlabbase)
 addpath(Matlabbase)
-addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific')
-addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\R peak detection')
-addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\Annotation')
-addpath('C:\Users\310122653\Documents\PhD\Matlab\cECG Data specific\ECG feature creation')
+addpath([basepath '\Documents\GitHub\cECG-Data-specific'])
+addpath([basepath '\Documents\GitHub\cECG-Data-specific\R peak detection'])
+addpath([basepath '\Documents\GitHub\cECG-Data-specific\Annotation'])
+addpath([basepath '\Documents\GitHub\cECG-Data-specific\ECG feature creation'])
+addpath([basepath '\Documents\GitHub\cECG-Data-specific\Create data'])
 
 path='E'; % the HDD file with the patient data. Needed for loading ECG
 % loadfolder=([path ':\cECG_study\B_Annotations\Datafiles\For Quick Annotator\']);
@@ -55,13 +64,19 @@ path='E'; % the HDD file with the patient data. Needed for loading ECG
 % savefolder= ([path ':\cECG_study\C_Processed_Data\']);
 
 %Folders after HDD crash. Now with VPN from Philips storage
-% savefolder=('E:\cECG_study\C_Processed_Data\For Xi\');
-loadfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\RAW DATA\For_Quick_Annotator\';
-% annotationfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\Annotations\Data and annotations used by Jan (Bea)\Annotation\participant';
-annotationfolder='C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Raw Data\Annotation\participant';
-savefolder=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\');
-
-SavefolderAnnotations=([ savefolder 'Annotations\']);
+if strcmp(user,'c3po')
+    loadfolder='D:\PhD\Article_3_(cECG)\RAW DATA\';
+    annotationfolder='D:\PhD\Article_3_(cECG)\Annotation\participant';
+    savefolder='D:\PhD\Article_3_(cECG)\Processed Data\';
+elseif strcmp(user,'Philips')
+    % annotationfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\Annotations\Data and annotations used by Jan (Bea)\Annotation\participant';
+    loadfolder='\\code1\storage\2012-0194_neonatal_data\cECG study\RAW DATA\For_Quick_Annotator\';
+    annotationfolder='C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Raw Data\Annotation\participant';
+    savefolder=('C:\Users\310122653\Documents\PhD\Article_3_(cECG)\Processed Data\');
+end
+    
+    
+SavefolderAnnotations=([ savefolder 'Annotations\']); mkdir (SavefolderAnnotations) ;
 
 if strcmp(RRMethod,'R')
     if strcmp('ECG',dataset)==1
@@ -72,6 +87,7 @@ if strcmp(RRMethod,'R')
         savefolderEDR=([ savefolder 'HRV_features\EDR\']);mkdir (savefolderEDR) ;
         savefolderRR=([ savefolder 'HRV_features\RR\']);mkdir (savefolderRR) ;
         savefolderResp=([ savefolder 'HRV_features\Resp\']);mkdir (savefolderResp) ;
+        savefolderAGEWEight=([ savefolder 'HRV_features\AGEWEight\']);mkdir (savefolderAGEWEight) ;
 
     elseif strcmp('cECG',dataset)==1
         savefolderHRVtime= ([ savefolder 'cHRV_features\timedomain\']);
@@ -81,6 +97,7 @@ if strcmp(RRMethod,'R')
         savefolderEDR=([ savefolder 'cHRV_features\EDR\']);
         savefolderRR=([ savefolder 'cHRV_features\RR\']);
         savefolderResp=([ savefolder 'cHRV_features\Resp\']); 
+        savefolderAGEWEight=([ savefolder 'cHRV_features\AGEWEight\']);mkdir (savefolderAGEWEight) ;
 
 
     else
@@ -236,13 +253,13 @@ end
         [EDR_300]=Respiration_from_ECG(ECG_win_300,RR_idx_300,RR_300,500);   
 
         if saving
-           Saving(EDR_30,savefolderEDR, Neonate, win)
-           Saving(EDR_300,savefolderEDR, Neonate, win)           
+           Saving(EDR_30,savefolderEDR, Neonate, win,S)
+           Saving(EDR_300,savefolderEDR, Neonate, win,S)           
            disp('* EDR saved')
         end              
     %% ************ Creating spectrum for ECG-Signal **************         
        [powerspectrum,f]=Lomb_scargel_single(RR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,S) ;
-       [powerspectrumEDR,fEDR]=Lomb_scargel_single(EDR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win) ;
+       [powerspectrumEDR,fEDR]=Lomb_scargel_single(EDR_300,RR_idx_300,t_300,Neonate,saving,savefolderHRVfreq,win,S) ;
 
         disp('* Periodogram calculated')
 % 
@@ -254,10 +271,10 @@ end
         Age_diff{k}=Pat_GACA(I);
     end
     if saving
-        Saving(Birthweight,savefolderAGEWEight, Neonate, win)
-        Saving(GA,savefolderAGEWEight, Neonate, win)
-        Saving(CA,savefolderAGEWEight, Neonate, win)
-        Saving(Age_diff,savefolderAGEWEight, Neonate, win)        
+        Saving(Birthweight,savefolderAGEWEight, Neonate, win,S)
+        Saving(GA,savefolderAGEWEight, Neonate, win,S)
+        Saving(CA,savefolderAGEWEight, Neonate, win,S)
+        Saving(Age_diff,savefolderAGEWEight, Neonate, win,S)        
         disp('* Age and Weight saved')
     end           
     %% ************ CALCULATE FEATURES **************
@@ -314,8 +331,8 @@ end
           disp('- LepelZiv ECG finished')         
         LempelZivRR(RR_300,Neonate,saving,savefolderHRVnonlin,win,S);
           disp('- LepelZiv HRV finished')   
-        LempelZivEDR(EDR_300,Neonate,saving,savefolderHRVnonlin,win,Sessions(S,1).name,S);
-          disp('- LepelZiv HRV finished')  
+%         LempelZivEDR(EDR_300,Neonate,saving,savefolderHRVnonlin,win,Sessions(S,1).name,S);
+%           disp('- LepelZiv EDR finished')  
 
         clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f
         
@@ -324,7 +341,7 @@ end
  end% Patient
 toc
 if saving
-    disp(['FEatures are saved in ' savefolder 'HRV_features\'])
+    disp(['Features are saved in ' savefolder 'HRV_features\'])
 end
 if shutItDown
     system('shutdown -s')

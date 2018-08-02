@@ -8,7 +8,13 @@
 % win=[60,120,180,240,300]; %window in seconds
 % overlap=[0.5,1];
 
-function [powerspectrum,f]=Lomb_scargel_single(RR,RR_idx,t,Neonate,saving,savefolder,win,S)  
+function [powerspectrum,f]=Lomb_scargel_single(RR,RR_idx,t,Neonate,saving,savefolder,win,S) 
+if isrow(RR)
+    RR=RR';
+end
+if isrow(RR_idx)
+    RR_idx=RR_idx';
+end
    all_idx=cell(1,length(RR));
    timing=cell(1,length(RR));
  % creating time vector  
