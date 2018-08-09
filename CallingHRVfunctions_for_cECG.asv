@@ -240,31 +240,32 @@ end
 
         BpE=Beats_per_Epoch(RR_300);SavingC(BpE,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S)   % S for session number
              disp('- BpE finished')
-        LL=linelength(ECG_win_300,t_300);SavingC(LL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S)   
+        LL=linelength(ECG_win_300);SavingC(LL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S)   
              disp('- Linelength finished')
-        aLL=meanarclength(ECG_win_30,t_30,faktor,win);SavingC(aLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S)   
+        aLL=meanarclength(ECG_win_30);SavingC(aLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S)   
              disp('- Mean linelength finished')
-        SDLL=SDLL_F(ECG_win_30,t_30,faktor,win);SavingC(SDLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S) %Standart derivation of 5min linelength
+        SDLL=SDLL(ECG_win_30,t_30);SavingC(SDLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S) %Standart derivation of 5min linelength
              disp('- SDLL finsihed')
-        SDaLL=SDaLL_F(ECG_win_30,t_30,faktor,win);SavingC(SDaLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S) %Standart derivation of 30s linelength meaned over 5min
+        SDaLL=SDaLL(ECG_win_30,t_30);SavingC(SDaLL,savefolderHRVtime, Neonate, win,Sessions(S,1).name,S) %Standart derivation of 30s linelength meaned over 5min
              disp('- SDaLL finished') 
+
 
   %%%%%%%% HRV TIME DOMAIN
         disp('HRV time domain analysis start')
 
-        SDNN=SDNN_F(RR_300);SavingC(SDNN,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
+        SDNN=SDNN(RR_300);SavingC(SDNN,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- SDNN finished') 
-        RMSSD=RMSSD_F(RR_300);SavingC(RMSSD,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
+        RMSSD=RMSSD(RR_300);SavingC(RMSSD,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- RMSSD finished')  
         [NN50,NN30,NN20,NN10]=NNx(RR_300);SavingC(NN50,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(NN30,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(NN20,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(NN10,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- NNx finished') 
         [pNN50,pNN30,pNN20,pNN10]=pNNx(RR_300);SavingC(pNN50,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(pNN30,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(pNN20,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S);SavingC(pNN10,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- pNNx finished') 
-        SDANN=SDANN_F(RR_30,faktor,win);SavingC(SDANN,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
+        SDANN=SDANN(RR_30);SavingC(SDANN,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- SDANN finished')
-        pDec=pDec_F(RR_300);SavingC(pDec,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
+        pDec=pDec(RR_300);SavingC(pDec,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
             disp('- pDEC finished') 
-        SDDec=SDDec_F(RR_300);SavingC(SDDec,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
+        SDDec=SDDec(RR_300);SavingC(SDDec,savefolderHRVtime, Neonate,win,Sessions(S,1).name,S)
            disp('- SDDec finished')
            
   %%%%%%% HRV Frequency domain
@@ -280,15 +281,15 @@ end
     %%%%%%% HRV Non linear
         disp('Nonlinear analysis start')
 % 
-        [SampEn,QSE,SEAUC,r_opt]=SampEn_QSE_SEAUC(RR_300,faktor); SavingC(SampEn,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(QSE,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(SEAUC,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(r_opt,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
-           disp('- SampEn QSE SEAUC finished')
+        [SampEn,QSE,SEAUC,r_opt]=SampEn_QSE_SEAUC(RR_300); SavingC(SampEn,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(QSE,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(SEAUC,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(r_opt,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
+            disp('- SampEn QSE SEAUC finished')
         LZECG=LempelZivECG(ECG_win_300);  SavingC(LZECG,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
           disp('- LepelZiv ECG finished')         
         LZNN=LempelZivRR(RR_300); SavingC(LZNN,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
           disp('- LepelZiv HRV finished')   
-        [SampEn_EDR,QSE_EDR,SEAUC_EDR,r_opt_EDR]=SampEn_QSE_SEAUC(EDR_300,faktor); SavingC(SampEn_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(QSE_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(SEAUC_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(r_opt_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
+        [SampEn_EDR,QSE_EDR,SEAUC_EDR,r_opt_EDR]=SampEn_QSE_SEAUC(EDR_300); SavingF(SampEn_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(QSE_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(SEAUC_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingF(r_opt_EDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
             disp('- SampEn_EDR QSE_EDR SEAUC_EDR finished')          
-        LZEDR=LempelZivEDR(EDR_300); SavingC(LZEDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
+        LZEDR=LempelZivEDR(EDR_300);
           disp('- LepelZiv EDR finished')  
 
         clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f
