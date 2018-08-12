@@ -24,7 +24,7 @@ pat=[4,5,6,7,9,10,11,12,13];
 % pat=[4,5,6,7,11,13];
 % pat=[7,11]
 % pat=[4,9,10,12]; 
-shutdown=0
+shutdown=1
 saving=1
 user='c3po';
 
@@ -218,7 +218,7 @@ end
             disp('* Spectrums saved')
         end
 
-% 
+
     %%  ************ AGE & Weight **************    
     for k=1:length(RR)
         Birthweight{k}=Pat_weight(I);
@@ -234,7 +234,7 @@ end
         disp('* Age and Weight saved')
     end           
     %% ************ CALCULATE FEATURES **************
-% 
+
     %%%%%%%% ECG TIME DOMAIN     
         disp('ECG time domain analysis start') 
 
@@ -274,12 +274,12 @@ end
         freqdomainHRV (powerspectrum,f);SavingC(totpow,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(VLF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(LF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(LFnorm,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(HF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(HFnorm,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(ratioLFHF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(sHF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(sHFnorm,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(uHF,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(uHFnorm,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S)
            disp('- Frequency finished') 
         [totpowR,LFR,LFnormR,HFR,HFnormR,ratioLFHFR,MFR,MFnormR,ratioMFHFR]=...
-        freqdomainEDR (powerspectrum,fEDR);SavingC(SDNN,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);    SavingC(totpowR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(LFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(LFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(HFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(HFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(ratioLFHFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(MFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);   SavingC(MFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);    SavingC(ratioMFHFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);
+        freqdomainEDR (powerspectrumEDR,fEDR); SavingC(totpowR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(LFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);SavingC(LFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(HFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(HFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(ratioLFHFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S); SavingC(MFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);   SavingC(MFnormR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);    SavingC(ratioMFHFR,savefolderHRVfreq, Neonate,win,Sessions(S,1).name,S);
            disp('- EDR requency finished')           
 
     %%%%%%% HRV Non linear
         disp('Nonlinear analysis start')
-% 
+ 
         [SampEn,QSE,SEAUC,r_opt]=SampEn_QSE_SEAUC(RR_300,faktor); SavingC(SampEn,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(QSE,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(SEAUC,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S);SavingC(r_opt,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
            disp('- SampEn QSE SEAUC finished')
         LZECG=LempelZivECG(ECG_win_300);  SavingC(LZECG,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
