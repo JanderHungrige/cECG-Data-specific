@@ -7,6 +7,9 @@
 % delete the others). Then you can create the matrix without lost data(6h).
 % You cannot simply use the DAQ data as there are annotations missing and
 % to correct for that is more difficult. 
+
+%   THIS IS DONE BY JUST COPYING THE RAW 2 SESSION FROM daq INTO THE RAW
+%   DATA FOLDER OF INTELLIVUE (ALREADY DONE; Check nevertheless)
 %
 % For single addition: outcomment the for loop command and end command for the sessions loop ( Line 75) and fill in e.g. S=2
 
@@ -108,18 +111,9 @@ end
 
 ExtraSession=0; % for Pat4 S=2 
 
- for I=1:length(pat)+1
+ for I=1:length(pat)
     disp('***************************************')
-    if ExtraSession==1
-        break
-    end
-    
-    if I==length(pat)+1 && pat(1)==4 % creating the file for Pat 4 Session2
-        I=1; filetype='DAQ';
-        Disp('Working on missing Session' )
-        ExtraSession=1;
-    end
-    
+
     disp(['Working on patient ' num2str(pat(I))])
     Neonate=pat(I);      
     
@@ -137,19 +131,7 @@ ExtraSession=0; % for Pat4 S=2
     Sessions=dir([filelocation filetype '*']);
     
     for S=1:length(Sessions)
-%         S=8
-%         if pat(I)==4 && S>1 %For patient 4 the Second Session has to be taken from DAQ. To not rename all manually shift over S=2
-%             S=S+1; %Leaving Session 2 empty. That has to be added "manually" using the DAQ. Remove the for loop and this if as well as the if before the end. Then set S=2
-%         end
-%         if pat(I)==4 && S==2
-%             continue
-%             %For patient 4 the Second Session has to be taken from DAQ insead of Intellivue as the Intellivue file is missing. To not rename all manually shift over S=2
-%             %Leaving Session 2 empty. That has to be added "manually" using the DAQ. Put filetype='DAQ', Remove this if and set S=2
-%         end
-%       
-        if I==length(pat)+1 && pat(1)==4 % creating the file for Pat 4 Session2
-            S=2; 
-        end
+% Pat4 Session2 is just copied manually in the raw folder and the results should be renamed to intellivue
 
         disp('- - - - - - - - - - - - - - - - - - - ')
         disp(['Working on session: ' Sessions(S,1).name ' NR:' num2str(S) '/' num2str(length(Sessions))])
@@ -305,9 +287,6 @@ ExtraSession=0; % for Pat4 S=2
 
         clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f
         
-        if ExtraSession==1
-            break
-        end
      end %Sessionp
  end% Patient
  disp('----------------------------------')

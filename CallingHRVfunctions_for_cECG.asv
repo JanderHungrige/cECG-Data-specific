@@ -23,8 +23,8 @@ filetype='Intellivue'; % Patient 4 misses one Intellivue File
 pat=[4,5,6,7,9,10,11,12,13]; 
 % pat=[4,5,6,7,11,13];
 % pat=[7,11]
-% pat=[4,9,10,12]; 
-shutdown=1
+pat=[4]; 
+shutdown=0
 saving=1
 user='c3po';
 
@@ -116,8 +116,8 @@ ExtraSession=0; % for Pat4 S=2
     
     if I==length(pat)+1 && pat(1)==4 % creating the file for Pat 4 Session2
         I=1; filetype='DAQ';
-        Disp('Working on missing Session' )
-        ExtraSession=1
+        disp('Working on missing Session')
+        ExtraSession=1;
     end
     
     disp(['Working on patient ' num2str(pat(I))])
@@ -148,7 +148,7 @@ ExtraSession=0; % for Pat4 S=2
 %         end
 %       
         if I==length(pat)+1 && pat(1)==4 % creating the file for Pat 4 Session2
-            S=2; filetype='Intellivue'; % filetype is not needed anymore. Use Intellivue again to not have to rename it per hand
+            S=2; 
         end
 
         disp('- - - - - - - - - - - - - - - - - - - ')
@@ -305,7 +305,7 @@ ExtraSession=0; % for Pat4 S=2
 
         clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f
         
-        if S==2 && Neonate==4
+        if ExtraSession==1
             break
         end
      end %Sessionp
