@@ -249,7 +249,9 @@ ExtraSession=0; % for Pat4 S=2
         SavingC(CA,savefolderAGEWEight, Neonate, win,Sessions(S,1).name,S)
         SavingC(Age_diff,savefolderAGEWEight, Neonate, win,Sessions(S,1).name,S)              
         disp('* Age and Weight saved')
-    end           
+    end       
+    clearvars Birthweight GA CA Age_diff
+
     %% ************ CALCULATE FEATURES **************
 
     %%%%%%%% ECG TIME DOMAIN     
@@ -308,8 +310,8 @@ ExtraSession=0; % for Pat4 S=2
         LZEDR=LempelZivEDR(EDR_300); SavingC(LZEDR,savefolderHRVnonlin, Neonate, win,Sessions(S,1).name,S)
           disp('- LepelZiv EDR finished')  
 
-        clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f
-        
+        clearvars ECG_win_300 ECG_win_30 t_ECG_300 t_ECG_30 RR_idx_300 RR_300 RR_idx_30 RR_30 powerspectrum f powerspectrumEDR fEDR ECG Resp EMG EOG Chin...
+            EDR_300 EDR_30 t_30 t_300        
      end %Sessionp
  end% Patient
  disp('----------------------------------')
